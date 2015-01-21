@@ -42,7 +42,6 @@ public class MainApp extends Application {
     CNode startNode;
     CNode targetNode;
     
-    
     int neighborsThatAreBarriers = 0;
      
     @Override
@@ -173,7 +172,6 @@ public class MainApp extends Application {
         }
     }
     
-    
     public CNode findLowestF(ArrayList<CNode> open){
         CNode lowest = new CNode();
         lowest.setG(50);
@@ -214,10 +212,7 @@ public class MainApp extends Application {
                grid[current.getX() - 1][current.getY()].setG(current.getG() + 1);
             }
             neighbors.add(grid[current.getX() - 1][current.getY()]);
-        }
-        
-        
-        
+        }  
     }
     
     public void traceback(){
