@@ -30,7 +30,7 @@ public class MainApp extends Application {
     //Creates grid for algorithm
     CNode[][] grid = new CNode[8][8];
     
-    //Creating open and closed lists
+    //Creating open and closed and neighbors lists
     ArrayList<CNode> open = new ArrayList();
     ArrayList<CNode> closed = new ArrayList();
     ArrayList<CNode> neighbors = new ArrayList();
@@ -115,7 +115,8 @@ public class MainApp extends Application {
         //Starts algorithm working!
         startAlgorithm.setOnMouseClicked(e -> handleStartAlgorithm());
         clearGrid.setOnMouseClicked(e -> handleClearGrid());
-
+        
+        //Sets up and displays window
         Scene scene = new Scene(border, 600, 660);
         
         primaryStage.setTitle("PathMaster!  ");
@@ -184,27 +185,48 @@ public class MainApp extends Application {
         }
         return lowest;
     }
-    //This method puts neighbors in neighbors array list, and calculates g
+    //This method puts neighbors in neighbors array list, and calculates g( i.e. Distance from Center)
     public void getNeighbors(CNode current){
-        if (current.getY() + 1 <= 7){ //BOTTOM NEIGHBOR
+        if (current.getY() + 1 <= 7){ //SOUTH NEIGHBOR
             if(grid[current.getX()][current.getY() + 1].getG() == 0){
                grid[current.getX()][current.getY() + 1].setG(current.getG() + 1);
             }
             neighbors.add(grid[current.getX()][current.getY() + 1]);
         }
         
-        if (current.getX() + 1 <= 7){ //RIGHT NEIGHBOR
+        if (current.getX() + 1 <= 7 && current.getY() + 1 <= 7){ //South East NEIGHBOR
+            if(grid[current.getX() + 1][current.getY() + 1].getG() == 0){
+               grid[current.getX() + 1][current.getY() + 1].setG(current.getG() + 2);
+            }
+            neighbors.add(grid[current.getX() + 1][current.getY() + 1]);
+        }
+        
+        if (current.getX() + 1 <= 7){ //EAST NEIGHBOR
              if(grid[current.getX() + 1][current.getY()].getG() == 0){
-               grid[current.getX() + 1][current.getY()].setG(current.getG() + 1);
+                grid[current.getX() + 1][current.getY()].setG(current.getG() + 1);
             }
             neighbors.add(grid[current.getX() + 1][current.getY()]);
         }
         
-        if (current.getY() - 1 >= 0){  //TOP NEIGHBOR
+        if (current.getX() + 1 <= 7 && current.getY() - 1 >= 0){ //North East NEIGHBOR
+            if(grid[current.getX() + 1][current.getY() - 1].getG() == 0){
+               grid[current.getX() + 1][current.getY() - 1].setG(current.getG() + 2);
+            }
+            neighbors.add(grid[current.getX() + 1][current.getY() - 1]);
+        }
+        
+        if (current.getY() - 1 >= 0){  //NORTH NEIGHBOR
             if (grid[current.getX()][current.getY() - 1].getG() == 0){
                 grid[current.getX()][current.getY() - 1].setG(current.getG() + 1);
             }
             neighbors.add(grid[current.getX()][current.getY() - 1]);
+        }
+        
+        if (current.getX() - 1 >= 0 && current.getY() - 1 >= 0 ){ //North West NEIGHBOR
+            if(grid[current.getX() - 1][current.getY() - 1].getG() == 0){
+               grid[current.getX() - 1][current.getY() - 1].setG(current.getG() + 2);
+            }
+            neighbors.add(grid[current.getX() - 1][current.getY() - 1]);
         }
         
         if (current.getX() - 1 >= 0){ //LEFT NEIGHBOR
@@ -213,6 +235,13 @@ public class MainApp extends Application {
             }
             neighbors.add(grid[current.getX() - 1][current.getY()]);
         }  
+        
+        if (current.getY() + 1 <= 7 && current.getX() - 1 >= 0){ //South West NEIGHBOR
+            if(grid[current.getX() - 1][current.getY() + 1].getG() == 0){
+               grid[current.getX() - 1][current.getY() + 1].setG(current.getG() + 2);
+            }
+            neighbors.add(grid[current.getX() - 1][current.getY() + 1]);
+        }
     }
     
     public void traceback(){
@@ -234,7 +263,8 @@ public class MainApp extends Application {
                 grid[x][y].setBarrier(false);
                 grid[x][y].setParentNode(new CNode());
                 if (grid[x][y] != startNode && grid[x][y] != targetNode){
-                    grid[x][y].setStyle("-fx-background-color: none");
+                    grid[x][y].setStyle("-fx-background-color: white");
+                    grid[x][y].setStyle("-fx-border-color: black");
                 }
             }
             open.clear();
